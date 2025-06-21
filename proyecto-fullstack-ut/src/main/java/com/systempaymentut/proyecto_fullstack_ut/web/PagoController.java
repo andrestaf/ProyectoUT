@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,15 +23,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.format.annotation.DateTimeFormat;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 
 
 @RestController
-@CrossOrigin("*")
+@RequestMapping("/api")
+@Tag(name = "Pagos", description = "Operaciones relacionadas con pagos y estudiantes")
 
-public class pagoController {
+public class    PagoController {
 
    @Autowired 
     private EstudianteRepository estudianteRepository;
@@ -51,14 +53,14 @@ public class pagoController {
 
     @GetMapping("/estudiantes/{codigo}")
     public Estudiante listarEstudiantePorCodigo(@PathVariable String codigo){
-        return estudianteRepository.findBycodigo(codigo);
+        return estudianteRepository.findByCodigo(codigo);
     
 
     }
 
      @GetMapping("/estudiantesPorPrograma")
     public List<Estudiante> listarEstudiantePorPrograma(@RequestParam String programaId){
-        return estudianteRepository.findByProgramaid(programaId);
+        return estudianteRepository.findByProgramaId(programaId);
 
     }
 
@@ -99,17 +101,15 @@ public class pagoController {
           public Pago actualizarStatusDePago(@RequestParam PagoStatus status, @PathVariable Long pagoId){
           return pagoService.actualizarPagoPorStatus(status, pagoId);
         }
-        
-
-        @PostMapping(path = "/path", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-        public Pago guardarPago(
-        @RequestParam("file") MultipartFile file, 
-        double cantidad,
-        TypePago type,
-        LocalDate date,
-        String codigoEstudiante) throws IOException {
-            return pagoService.savePago(file, cantidad, type, date, codigoEstudiante);
-        }
+        @PostMapping(path = "/pagos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+            public Pago guardarPago(
+                @RequestParam("file") MultipartFile file,
+                @RequestParam("cantidad") double cantidad,
+                @RequestParam("type") TypePago type,
+                @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                @RequestParam("codigoEstudiante") String codigoEstudiante) throws IOException {
+        return pagoService.savePago(file, cantidad, type, date, codigoEstudiante);
+    }
 
 
         @GetMapping (value = "/pagoFile/{pagoId}", produces = MediaType.APPLICATION_PDF_VALUE)

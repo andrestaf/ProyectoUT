@@ -1,6 +1,6 @@
 package com.systempaymentut.proyecto_fullstack_ut.entities;
 
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 
 public class Estudiante {
     @Id
-    private String id;   
+    private String id;
 
     private String nombre;
     private String apellido;

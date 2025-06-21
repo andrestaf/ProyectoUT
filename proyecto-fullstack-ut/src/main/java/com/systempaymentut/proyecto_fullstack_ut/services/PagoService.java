@@ -41,7 +41,7 @@ public class PagoService {
     Path filePath = Paths.get(System.getProperty("user.home"),"enset-data", "pagos", fileName + ".pdf");
     Files.copy(file.getInputStream(), filePath);
 
-    Estudiante esudiante = EstudianteRepository.findBycodigo(codigoEstudiante);
+    Estudiante esudiante = EstudianteRepository.findByCodigo(codigoEstudiante);
     Pago pago = Pago.builder()
     .type(type)
     .status(PagoStatus.CREADO)

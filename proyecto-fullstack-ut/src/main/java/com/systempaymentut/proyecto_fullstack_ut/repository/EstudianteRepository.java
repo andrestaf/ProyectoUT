@@ -12,7 +12,7 @@ import com.systempaymentut.proyecto_fullstack_ut.entities.Estudiante;
 
 @Repository
 public interface EstudianteRepository extends JpaRepository<Estudiante, String> {
-    
-    Estudiante findBycodigo(String codigo);
-    List <Estudiante> findByProgramaid (String programaId);
+
+    Estudiante findByCodigo(String codigo);
+    List <Estudiante> findByProgramaId (String programaId);
 }
